@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -86,6 +88,16 @@ public class MainActivity extends Activity {
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
+        Button disconnectButton = (Button) findViewById(R.id.disconnect);
+
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gattServiceIntent = new Intent(MainActivity.this, BluetoothLeService.class);
+                stopService(gattServiceIntent);
+            }
+        });
+
         //scanLeDevice(true);
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
@@ -96,8 +108,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        stopService(gattServiceIntent);
     }
 
     private void scanLeDevice(final boolean enable) {

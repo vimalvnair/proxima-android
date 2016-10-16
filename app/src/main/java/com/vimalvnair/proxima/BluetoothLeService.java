@@ -248,7 +248,7 @@ public class BluetoothLeService extends Service {
                     mBluetoothGatt.readRemoteRssi();
                 }
             }
-        }, 1, 1, TimeUnit.SECONDS);
+        }, 1, 500, TimeUnit.MILLISECONDS);
         return true;
     }
 
