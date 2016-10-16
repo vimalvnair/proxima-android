@@ -89,16 +89,15 @@ public class MainActivity extends Activity {
         //scanLeDevice(true);
 
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+        startService(gattServiceIntent);
+        //bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBluetoothLeService.close();
-        mBluetoothLeService.disconnect();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        stopService(gattServiceIntent);
     }
 
     private void scanLeDevice(final boolean enable) {

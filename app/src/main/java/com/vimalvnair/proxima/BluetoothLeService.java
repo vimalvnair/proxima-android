@@ -152,8 +152,18 @@ public class BluetoothLeService extends Service {
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        if (!initialize()) {
+            Log.e("blue_prox", "Unable to initialize Bluetooth");
+            stopSelf();
+        }
+        // Automatically connects to the device upon successful start-up initialization.
+        connect("B8:27:EB:2C:A3:58");
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "onStartCommand.................................................: ");
         super.onStartCommand(intent, flags, startId);
         Notification notification = new Notification.Builder(this)
                 .setContentTitle("Proxima")
@@ -161,6 +171,14 @@ public class BluetoothLeService extends Service {
                 .build();
         startForeground(400, notification);
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG, "onDestroy: BluetoothLeService");
+        close();
+        disconnect();
     }
 
     private final IBinder mBinder = new LocalBinder();
